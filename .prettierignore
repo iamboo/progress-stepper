@@ -1,0 +1,7 @@
+package.json
+package-lock.json
+cashmere-example.module.ts
+CHANGELOG.md
+/coverage
+dist/
+*.yml

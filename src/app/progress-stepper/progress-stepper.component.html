@@ -1,0 +1,18 @@
+<div class="hc-step-container" [ngClass]="typeClass">
+    <div class="hc-step-track">
+        <div class="hc-step" *ngFor="let step of steps; index as i" [class.active]="step.active">
+            <span class="hc-step-disk">
+                <ng-container *ngIf="step.iconSet && step.icon; else elseBlock">
+                    <hc-icon [fontSet]="step.iconSet" [fontIcon]="step.icon"></hc-icon>
+                </ng-container>
+                <ng-template #elseBlock>{{ i + 1 }}</ng-template>
+            </span>
+            <span class="hc-step-label">{{ step.label }}</span>
+            <span class="hc-step-arrow"></span>
+        </div>
+        <ng-content></ng-content>
+    </div>
+    <div *ngIf="useRouterOutlet" class="hc-step-content">
+        <router-outlet *ngIf="routerEnabled"></router-outlet>
+    </div>
+</div>
