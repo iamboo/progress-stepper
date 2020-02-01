@@ -1,6 +1,13 @@
 <div class="hc-step-container" [ngClass]="typeClass">
     <div class="hc-step-track">
-        <div class="hc-step" *ngFor="let step of steps; index as i" [class.active]="step.active">
+        <div
+            class="hc-step"
+            *ngFor="let step of steps; index as i; last as isLast"
+            [class.active]="i === activeIndex"
+            [class.complete]="i < activeIndex - 1"
+            [class.completed]="i === activeIndex - 1"
+            [class.last]="isLast"
+        >
             <span class="hc-step-disk">
                 <ng-container *ngIf="step.iconSet && step.icon; else elseBlock">
                     <hc-icon [fontSet]="step.iconSet" [fontIcon]="step.icon"></hc-icon>

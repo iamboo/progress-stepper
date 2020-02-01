@@ -1,4 +1,88 @@
 @import '~@healthcatalyst/cashmere/scss/colors';
+$track-space: 4rem;
+@mixin step-arrow($top-bottom, $right) {
+    border-left: $track-space / 4 solid transparent;
+    border-top: $track-space / 2 solid $top-bottom;
+    border-bottom: $track-space / 2 solid $top-bottom;
+    display: block;
+    height: 0px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    @if $right {
+        border-right: $track-space * 0.05 solid $right;
+    }
+}
+@mixin step-disk($bg-color, $border-color) {
+    $disk-space: $track-space * 0.3333;
+
+    background: $bg-color;
+    border-radius: 50%;
+    border: 0.1rem solid $border-color;
+    display: block;
+    height: $track-space * 0.4;
+    left: $track-space * 0.3;
+    line-height: $track-space * 0.35;
+    position: absolute;
+    text-align: center;
+    top: $track-space * 0.3;
+    width: $track-space * 0.4;
+}
+@mixin theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
+    .hc-step-track {
+        background-color: $track-bg;
+    }
+    .hc-step {
+        border-top-color: $track-bg;
+        .hc-step-disk {
+            @include step-disk($disk-bg, $border);
+        }
+        &.active {
+            background-color: $active;
+            &:not(.last) {
+                .hc-step-arrow {
+                    @include step-arrow($track-bg, null);
+                }
+            }
+            .hc-step-label {
+                color: $text;
+            }
+            .hc-step-disk {
+                border-color: $disk-bg;
+            }
+        }
+        &.complete {
+            background-color: $complete;
+        }
+        &.completed {
+            background-color: $complete;
+            .hc-step-arrow {
+                @include step-arrow($active, null);
+            }
+        }
+        &:not(.active):not(.last):not(.completed) {
+            .hc-step-arrow {
+                @include step-arrow($track-bg, null);
+            }
+            &:after {
+                content: '';
+                @include step-arrow($border, $border);
+                z-index: 1;
+            }
+            &.complete {
+                .hc-step-arrow {
+                    @include step-arrow($complete, null);
+                }
+                &:after {
+                    content: '';
+                    @include step-arrow($active, $active);
+                    z-index: 1;
+                }
+            }
+        }
+    }
+}
 
 :host(.default) {
     .arrow {
@@ -8,27 +92,13 @@
         }
         .hc-step {
             flex: 1;
-            line-height: 4rem;
+            line-height: $track-space;
             position: relative;
-            &:after {
-                position: absolute;
-                right: 0;
-                content: '';
-                border-left: 1rem;
-                border-top: 2rem solid transparent;
-            }
+            padding-left: $track-space * 0.8;
         }
     }
 }
 
-:host(.green) {
-    .hc-step-track {
-        background-color: $shadow;
-    }
-    .hc-step {
-        border-top-color: $shadow;
-        .active {
-            background-color: $primary-action;
-        }
-    }
+:host(.primary) {
+    @include theme($primary-action, $light-green, $slate-gray-100, $slate-gray-200, #fff, #fff);
 }
