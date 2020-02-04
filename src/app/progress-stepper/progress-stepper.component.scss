@@ -21,6 +21,7 @@ $track-space: 4rem;
     border-radius: 50%;
     border: 0.1rem solid $border-color;
     display: block;
+    font-size: 0.9rem;
     height: $track-space * 0.4;
     left: $track-space * 0.3;
     line-height: $track-space * 0.35;
@@ -33,50 +34,71 @@ $track-space: 4rem;
     .hc-step-track {
         background-color: $track-bg;
     }
+
     .hc-step {
         border-top-color: $track-bg;
+
         .hc-step-disk {
             @include step-disk($disk-bg, $border);
         }
+
         &.active {
             background-color: $active;
+
             &:not(.last) {
                 .hc-step-arrow {
                     @include step-arrow($track-bg, null);
                 }
             }
+
             .hc-step-label {
                 color: $text;
             }
+
             .hc-step-disk {
                 border-color: $disk-bg;
             }
         }
+
         &.complete {
             background-color: $complete;
+
+            .hc-step-disk {
+                border-color: $disk-bg;
+            }
         }
+
         &.completed {
             background-color: $complete;
+
             .hc-step-arrow {
                 @include step-arrow($active, null);
             }
+
+            .hc-step-disk {
+                border-color: $disk-bg;
+            }
         }
+
         &:not(.active):not(.last):not(.completed) {
             .hc-step-arrow {
                 @include step-arrow($track-bg, null);
             }
+
             &:after {
                 content: '';
                 @include step-arrow($border, $border);
                 z-index: 1;
             }
+
             &.complete {
                 .hc-step-arrow {
                     @include step-arrow($complete, null);
                 }
+
                 &:after {
-                    content: '';
                     @include step-arrow($active, $active);
+                    content: '';
                     z-index: 1;
                 }
             }
@@ -90,6 +112,7 @@ $track-space: 4rem;
             display: flex;
             flex-direction: row;
         }
+
         .hc-step {
             flex: 1;
             line-height: $track-space;
@@ -99,6 +122,9 @@ $track-space: 4rem;
     }
 }
 
-:host(.primary) {
-    @include theme($primary-action, $light-green, $slate-gray-100, $slate-gray-200, #fff, #fff);
+:host(.action) {
+    @include theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
+}
+:host(.brand) {
+    @include theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
 }

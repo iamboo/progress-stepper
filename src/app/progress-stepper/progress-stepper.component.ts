@@ -16,7 +16,6 @@ export interface StepInterface {
     iconSet?: 'hc-icons' | 'fa';
     icon?: string;
     active?: boolean;
-    completed?: boolean;
 }
 
 @Component({
