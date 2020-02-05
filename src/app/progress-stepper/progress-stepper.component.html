@@ -4,6 +4,7 @@
             class="hc-step"
             *ngFor="let step of steps; index as i; last as isLast; first as isFirst"
             [class.active]="i === activeIndex"
+            [class.incomplete]="i > activeIndex"
             [class.complete]="i < activeIndex - 1"
             [class.completed]="i === activeIndex - 1"
             [class.last]="isLast"

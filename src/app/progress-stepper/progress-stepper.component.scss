@@ -40,6 +40,10 @@ $track-space: 4rem;
             width: $track-space * 0.4;
         }
 
+        .hc-step-label {
+            color: $text;
+        }
+
         &.active {
             background-color: $active;
 
@@ -47,10 +51,6 @@ $track-space: 4rem;
                 .hc-step-arrow {
                     @include step-arrow($track-bg, null);
                 }
-            }
-
-            .hc-step-label {
-                color: $text;
             }
 
             .hc-step-disk {
@@ -83,6 +83,12 @@ $track-space: 4rem;
 
             .hc-step-label {
                 color: $text;
+            }
+        }
+
+        &.incomplete {
+            .hc-step-label {
+                color: unset;
             }
         }
 
