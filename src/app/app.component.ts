@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StepInterface} from './progress-stepper/progress-stepper.component';
+import {StepInterface, StepSettingsInterface} from './progress-stepper/progress-stepper.component';
 
 @Component({
     selector: 'hc-root',
@@ -8,6 +8,7 @@ import {StepInterface} from './progress-stepper/progress-stepper.component';
 })
 export class AppComponent implements OnInit {
     progressSteps: StepInterface[];
+    tabSettings: StepSettingsInterface;
     constructor() {}
 
     ngOnInit() {
@@ -18,5 +19,8 @@ export class AppComponent implements OnInit {
             {label: 'Fall'},
             {label: 'Year Round'}
         ];
+        this.tabSettings = {
+            type: 'isolated'
+        };
     }
 }

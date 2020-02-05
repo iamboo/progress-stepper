@@ -1,5 +1,7 @@
 @import '~@healthcatalyst/cashmere/scss/colors';
+
 $track-space: 4rem;
+
 @mixin step-arrow($top-bottom, $right) {
     border-left: $track-space / 4 solid transparent;
     border-top: $track-space / 2 solid $top-bottom;
@@ -14,23 +16,8 @@ $track-space: 4rem;
         border-right: $track-space * 0.05 solid $right;
     }
 }
-@mixin step-disk($bg-color, $border-color) {
-    $disk-space: $track-space * 0.3333;
 
-    background: $bg-color;
-    border-radius: 50%;
-    border: 0.1rem solid $border-color;
-    display: block;
-    font-size: 0.9rem;
-    height: $track-space * 0.4;
-    left: $track-space * 0.3;
-    line-height: $track-space * 0.35;
-    position: absolute;
-    text-align: center;
-    top: $track-space * 0.3;
-    width: $track-space * 0.4;
-}
-@mixin theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
+@mixin arrow-theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
     .hc-step-track {
         background-color: $track-bg;
     }
@@ -39,7 +26,18 @@ $track-space: 4rem;
         border-top-color: $track-bg;
 
         .hc-step-disk {
-            @include step-disk($disk-bg, $border);
+            background: $disk-bg;
+            border-radius: 50%;
+            border: 0.1rem solid $border;
+            display: block;
+            font-size: 0.9rem;
+            height: $track-space * 0.4;
+            left: $track-space * 0.3;
+            line-height: $track-space * 0.35;
+            position: absolute;
+            text-align: center;
+            top: $track-space * 0.3;
+            width: $track-space * 0.4;
         }
 
         &.active {
@@ -63,6 +61,10 @@ $track-space: 4rem;
         &.complete {
             background-color: $complete;
 
+            .hc-step-label {
+                color: $text;
+            }
+
             .hc-step-disk {
                 border-color: $disk-bg;
             }
@@ -77,6 +79,10 @@ $track-space: 4rem;
 
             .hc-step-disk {
                 border-color: $disk-bg;
+            }
+
+            .hc-step-label {
+                color: $text;
             }
         }
 
@@ -106,25 +112,119 @@ $track-space: 4rem;
     }
 }
 
-:host(.default) {
-    .arrow {
-        .hc-step-track {
-            display: flex;
-            flex-direction: row;
-        }
+@mixin isolated-track($track-color, $track-height, $disk-size) {
+    content: '';
+    display: block;
+    position: absolute;
+    height: $track-height;
+    background: $track-color;
+    left: 0px;
+    right: 0px;
+    top: $disk-size / 2;
+    margin-top: -($track-height / 2);
+    z-index: 1;
+}
 
-        .hc-step {
-            flex: 1;
-            line-height: $track-space;
-            position: relative;
-            padding-left: $track-space * 0.8;
+@mixin isolated-theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
+    $disk-size: 2rem;
+    $track-height: 0.5rem;
+    .hc-step {
+        padding-top: $disk-size;
+        .hc-step-disk {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0px 0px 0px 3px $active;
+            display: block;
+            font-size: 1rem;
+            height: $disk-size;
+            line-height: $disk-size;
+            text-align: center;
+            width: $disk-size;
+            position: absolute;
+            left: 50%;
+            top: 0px;
+            margin-left: -($disk-size / 2);
+            z-index: 2;
+        }
+        &:before {
+            @include isolated-track($track-bg, $track-height, $disk-size);
+        }
+        &.complete,
+        &.completed {
+            &:before {
+                background: $active;
+            }
+        }
+        &.active {
+            &:before {
+                background: $active;
+                right: 50%;
+            }
+            &:after {
+                @include isolated-track($track-bg, $track-height, $disk-size);
+                left: 50%;
+            }
+        }
+        .hc-step-label,
+        .hc-step-label-count {
+            line-height: $disk-size;
+        }
+        &.first {
+            &:before {
+                left: 50%;
+            }
+        }
+        &.last {
+            &:before {
+                right: 50%;
+            }
         }
     }
 }
 
-:host(.action) {
-    @include theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
-}
-:host(.brand) {
-    @include theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
+:host(.default) {
+    .hc-step-track {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .hc-step {
+        flex: 1;
+        position: relative;
+    }
+
+    .arrow {
+        .hc-step {
+            line-height: $track-space;
+            padding-left: $track-space * 0.8;
+        }
+
+        .hc-step-label-count {
+            display: none;
+        }
+    }
+
+    &.action {
+        .arrow {
+            @include arrow-theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
+        }
+        .isolated {
+            @include isolated-theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
+        }
+    }
+
+    &.brand {
+        .arrow {
+            @include arrow-theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
+        }
+        .isolated {
+            @include isolated-theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
+        }
+    }
+
+    .isolated {
+        .hc-step {
+            text-align: center;
+        }
+    }
 }

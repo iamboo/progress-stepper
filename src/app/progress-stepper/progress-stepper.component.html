@@ -2,11 +2,12 @@
     <div class="hc-step-track">
         <div
             class="hc-step"
-            *ngFor="let step of steps; index as i; last as isLast"
+            *ngFor="let step of steps; index as i; last as isLast; first as isFirst"
             [class.active]="i === activeIndex"
             [class.complete]="i < activeIndex - 1"
             [class.completed]="i === activeIndex - 1"
             [class.last]="isLast"
+            [class.first]="isFirst"
         >
             <span class="hc-step-disk">
                 <ng-container *ngIf="step.iconSet && step.icon; else elseBlock">
@@ -14,6 +15,7 @@
                 </ng-container>
                 <ng-template #elseBlock>{{ i + 1 }}</ng-template>
             </span>
+            <span class="hc-step-label-count">{{ i + 1 }}</span>
             <span class="hc-step-label">{{ step.label }}</span>
             <span class="hc-step-arrow"></span>
         </div>
