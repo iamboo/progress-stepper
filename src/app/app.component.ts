@@ -13,11 +13,11 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.progressSteps = [
-            {label: 'Winter'},
-            {label: 'Spring'},
-            {label: 'Summer', active: true},
+            {label: 'Winter', iconSet: 'fa', icon: 'fa-check'},
+            {label: 'Spring', iconSet: 'fa', icon: 'fa-lock'},
+            {label: 'Summer', active: true, iconSet: 'fa', icon: 'fa-lock'},
             {label: 'Fall'},
-            {label: 'Year Round'}
+            {label: 'Year Round', iconSet: 'fa', icon: 'fa-times'}
         ];
         this.tabSettings = {
             type: 'isolated'

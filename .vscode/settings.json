@@ -2,5 +2,6 @@
     "editor.formatOnSave": true,
     "javascript.preferences.quoteStyle": "single",
     "typescript.preferences.quoteStyle": "single",
-    "editor.formatOnPaste": true
+    "editor.formatOnPaste": true,
+    "prettier.tabWidth": 4
 }

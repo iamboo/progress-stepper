@@ -7,6 +7,9 @@ $track-space: 4rem;
 }
 
 @mixin step-arrow($top-bottom, $right) {
+    @if $right {
+        border-right: $track-space * 0.05 solid $right;
+    }
     border-left: $track-space / 4 solid transparent;
     border-top: $track-space / 2 solid $top-bottom;
     border-bottom: $track-space / 2 solid $top-bottom;
@@ -16,9 +19,6 @@ $track-space: 4rem;
     right: 0;
     top: 0;
     z-index: 2;
-    @if $right {
-        border-right: $track-space * 0.05 solid $right;
-    }
 }
 
 @mixin arrow-theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
@@ -28,25 +28,6 @@ $track-space: 4rem;
 
     .hc-step {
         border-top-color: $track-bg;
-
-        .hc-step-disk {
-            @include disk-border($border);
-            background: $disk-bg;
-            border-radius: 50%;
-            display: block;
-            font-size: 0.9rem;
-            height: $track-space * 0.4;
-            left: $track-space * 0.3;
-            line-height: $track-space * 0.4;
-            position: absolute;
-            text-align: center;
-            top: $track-space * 0.3;
-            width: $track-space * 0.4;
-        }
-
-        .hc-step-label {
-            color: $text;
-        }
 
         &.active {
             background-color: $active;
@@ -60,6 +41,10 @@ $track-space: 4rem;
             .hc-step-disk {
                 @include disk-border($active);
             }
+
+            hc-icon {
+                color: $active;
+            }
         }
 
         &.complete {
@@ -71,6 +56,10 @@ $track-space: 4rem;
 
             .hc-step-disk {
                 @include disk-border($complete);
+            }
+
+            hc-icon {
+                color: $complete;
             }
         }
 
@@ -88,11 +77,19 @@ $track-space: 4rem;
             .hc-step-label {
                 color: $text;
             }
+
+            hc-icon {
+                color: $complete;
+            }
         }
 
         &.incomplete {
             .hc-step-label {
                 color: unset;
+            }
+
+            hc-icon {
+                color: $border;
             }
         }
 
@@ -120,93 +117,153 @@ $track-space: 4rem;
             }
         }
     }
+
+    .hc-step-disk {
+        @include disk-border($border);
+        background: $disk-bg;
+        border-radius: 50%;
+        display: block;
+        font-size: 0.9rem;
+        height: $track-space * 0.4;
+        left: $track-space * 0.3;
+        line-height: $track-space * 0.4;
+        position: absolute;
+        text-align: center;
+        top: $track-space * 0.3;
+        width: $track-space * 0.4;
+    }
+
+    .hc-step-label {
+        color: $text;
+    }
+
+    hc-icon {
+        font-size: $track-space * 0.25;
+        height: 100%;
+        line-height: $track-space * 0.4;
+        width: 100%;
+    }
 }
 
 @mixin isolated-track($track-color, $track-height, $disk-size) {
+    background: $track-color;
     content: '';
     display: block;
-    position: absolute;
     height: $track-height;
-    background: $track-color;
     left: 0px;
+    margin-top: -($track-height / 2);
+    position: absolute;
     right: 0px;
     top: $disk-size / 2;
-    margin-top: -($track-height / 2);
     z-index: 1;
 }
 
 @mixin isolated-theme($active, $track-bg, $disk-bg, $text) {
     $disk-size: 2rem;
     $track-height: 0.5rem;
+
     .hc-step {
         padding-top: $disk-size;
-        .hc-step-disk {
-            @include disk-border($track-bg);
-            background: $disk-bg;
-            border-radius: 50%;
-            display: block;
-            font-size: 1rem;
-            height: $disk-size;
-            line-height: $disk-size;
-            text-align: center;
-            width: $disk-size;
-            position: absolute;
-            left: 50%;
-            top: 0px;
-            margin-left: -($disk-size / 2);
-            z-index: 2;
-        }
+
         &:before {
             @include isolated-track($track-bg, $track-height, $disk-size);
         }
+
         &.complete,
         &.completed {
             .hc-step-disk {
                 @include disk-border($active);
             }
+
             &:before {
                 background: $active;
             }
+
+            hc-icon {
+                color: $active;
+            }
         }
+
         &.active {
             .hc-step-disk {
                 @include disk-border($active);
             }
+
             .hc-step-label,
             .hc-step-label-count {
                 font-weight: 600;
             }
+
+            hc-icon {
+                color: $active;
+            }
+
             &:before {
                 background: $active;
                 right: 50%;
             }
+
             &:after {
                 @include isolated-track($track-bg, $track-height, $disk-size);
                 left: 50%;
             }
         }
-        .hc-step-label,
-        .hc-step-label-count {
-            line-height: $disk-size;
-            color: $text;
-            display: inline-block;
-            padding: 0 0.15rem;
-        }
-        .hc-step-label-count {
-            &:after {
-                content: '.';
+
+        &.incomplete {
+            hc-icon {
+                color: $track-bg;
             }
         }
+
         &.first {
             &:before {
                 left: 50%;
             }
         }
+
         &.last {
             &:before {
                 right: 50%;
             }
         }
+    }
+
+    .hc-step-label,
+    .hc-step-label-count {
+        color: $text;
+        display: inline-block;
+        line-height: $disk-size;
+        padding: 0 0.15rem;
+    }
+
+    .hc-step-label-count {
+        &:after {
+            content: '.';
+        }
+    }
+
+    .hc-step-disk {
+        @include disk-border($track-bg);
+        background: $disk-bg;
+        border-radius: 50%;
+        display: block;
+        font-size: 1rem;
+        height: $disk-size;
+        left: 50%;
+        line-height: $disk-size;
+        margin-left: -($disk-size / 2);
+        position: absolute;
+        text-align: center;
+        top: 0px;
+        width: $disk-size;
+        z-index: 2;
+    }
+
+    hc-icon {
+        font-size: $track-space * 0.35;
+        height: 100%;
+        line-height: $track-space * 0.48;
+        width: 100%;
     }
 }
 
