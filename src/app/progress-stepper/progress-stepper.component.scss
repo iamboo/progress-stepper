@@ -2,6 +2,10 @@
 
 $track-space: 4rem;
 
+@mixin disk-border($border-color) {
+    box-shadow: 0px 0px 0px 3px $border-color;
+}
+
 @mixin step-arrow($top-bottom, $right) {
     border-left: $track-space / 4 solid transparent;
     border-top: $track-space / 2 solid $top-bottom;
@@ -26,14 +30,14 @@ $track-space: 4rem;
         border-top-color: $track-bg;
 
         .hc-step-disk {
+            @include disk-border($border);
             background: $disk-bg;
             border-radius: 50%;
-            border: 0.1rem solid $border;
             display: block;
             font-size: 0.9rem;
             height: $track-space * 0.4;
             left: $track-space * 0.3;
-            line-height: $track-space * 0.35;
+            line-height: $track-space * 0.4;
             position: absolute;
             text-align: center;
             top: $track-space * 0.3;
@@ -54,7 +58,7 @@ $track-space: 4rem;
             }
 
             .hc-step-disk {
-                border-color: $disk-bg;
+                @include disk-border($active);
             }
         }
 
@@ -66,7 +70,7 @@ $track-space: 4rem;
             }
 
             .hc-step-disk {
-                border-color: $disk-bg;
+                @include disk-border($complete);
             }
         }
 
@@ -78,7 +82,7 @@ $track-space: 4rem;
             }
 
             .hc-step-disk {
-                border-color: $disk-bg;
+                @include disk-border($complete);
             }
 
             .hc-step-label {
@@ -131,15 +135,15 @@ $track-space: 4rem;
     z-index: 1;
 }
 
-@mixin isolated-theme($active, $complete, $track-bg, $border, $disk-bg, $text) {
+@mixin isolated-theme($active, $track-bg, $disk-bg, $text) {
     $disk-size: 2rem;
     $track-height: 0.5rem;
     .hc-step {
         padding-top: $disk-size;
         .hc-step-disk {
-            background: #fff;
+            @include disk-border($track-bg);
+            background: $disk-bg;
             border-radius: 50%;
-            box-shadow: 0px 0px 0px 3px $active;
             display: block;
             font-size: 1rem;
             height: $disk-size;
@@ -157,11 +161,21 @@ $track-space: 4rem;
         }
         &.complete,
         &.completed {
+            .hc-step-disk {
+                @include disk-border($active);
+            }
             &:before {
                 background: $active;
             }
         }
         &.active {
+            .hc-step-disk {
+                @include disk-border($active);
+            }
+            .hc-step-label,
+            .hc-step-label-count {
+                font-weight: 600;
+            }
             &:before {
                 background: $active;
                 right: 50%;
@@ -174,6 +188,14 @@ $track-space: 4rem;
         .hc-step-label,
         .hc-step-label-count {
             line-height: $disk-size;
+            color: $text;
+            display: inline-block;
+            padding: 0 0.15rem;
+        }
+        .hc-step-label-count {
+            &:after {
+                content: '.';
+            }
         }
         &.first {
             &:before {
@@ -202,7 +224,7 @@ $track-space: 4rem;
     .arrow {
         .hc-step {
             line-height: $track-space;
-            padding-left: $track-space * 0.8;
+            padding-left: $track-space * 0.9;
         }
 
         .hc-step-label-count {
@@ -215,7 +237,7 @@ $track-space: 4rem;
             @include arrow-theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
         }
         .isolated {
-            @include isolated-theme($primary-action, #1fbe74, $slate-gray-100, $slate-gray-200, #fff, #fff);
+            @include isolated-theme($primary-action, $slate-gray-200, #fff, #444);
         }
     }
 
@@ -224,7 +246,7 @@ $track-space: 4rem;
             @include arrow-theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
         }
         .isolated {
-            @include isolated-theme($primary-brand, #43c1fc, $slate-gray-100, $slate-gray-200, #fff, #fff);
+            @include isolated-theme($primary-brand, $slate-gray-200, #fff, #444);
         }
     }
 

@@ -8,6 +8,7 @@ export function throwErrorForMissingRouterLink(stepsWithoutRouterLink: StepInter
 export interface StepSettingsInterface {
     type?: 'arrow' | 'isolated';
     useRouterOutlet?: boolean;
+    showCount?: boolean;
 }
 
 export interface StepInterface {
@@ -26,6 +27,7 @@ export interface StepInterface {
 export class ProgressStepperComponent implements AfterContentInit {
     routerEnabled = false;
     useRouterOutlet = false;
+    showStepCount = false;
     typeClass = '';
     activeIndex = 0;
 
@@ -40,6 +42,7 @@ export class ProgressStepperComponent implements AfterContentInit {
     ngAfterContentInit() {
         this.checkForRouterUse();
         this.typeClass = this.settings && this.settings.type ? this.settings.type : 'arrow';
+        this.showStepCount = this.settings && this.settings.showCount ? this.settings.showCount : false;
         const foundIndex = this.steps.findIndex(step => step.active);
         this.activeIndex = foundIndex === -1 ? 0 : foundIndex;
     }

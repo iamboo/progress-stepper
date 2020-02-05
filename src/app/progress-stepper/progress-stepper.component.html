@@ -16,7 +16,7 @@
                 </ng-container>
                 <ng-template #elseBlock>{{ i + 1 }}</ng-template>
             </span>
-            <span class="hc-step-label-count">{{ i + 1 }}</span>
+            <span class="hc-step-label-count" *ngIf="showStepCount">{{ i + 1 }}</span>
             <span class="hc-step-label">{{ step.label }}</span>
             <span class="hc-step-arrow"></span>
         </div>
