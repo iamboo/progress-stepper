@@ -1,5 +1,5 @@
 import {Component, Input, AfterContentInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, NavigationEnd} from '@angular/router';
 
 export function throwErrorForMissingRouterLink(stepsWithoutRouterLink: StepInterface[]) {
     const stepLabels = stepsWithoutRouterLink.map(step => step.label);
@@ -44,6 +44,12 @@ export class ProgressStepperComponent implements AfterContentInit {
         this.typeClass = this.settings && this.settings.type ? this.settings.type : 'arrow';
         this.showStepCount = this.settings && this.settings.showCount ? this.settings.showCount : false;
         this._checkForRouterUse();
+        this.router.events.forEach(event => {
+            if (event instanceof NavigationEnd) {
+                const url = event && event.url ? event.url : '';
+                this._setCurrentStep(url);
+            }
+        });
     }
 
     private _checkForRouterUse() {
@@ -54,17 +60,12 @@ export class ProgressStepperComponent implements AfterContentInit {
         } else {
             this.routerEnabled = countUsingRouter === this.steps.length;
             this.useRouterOutlet = this.settings && this.settings.useRouterOutlet === true;
-            this._setCurrentStep();
         }
     }
 
-    private _setCurrentStep() {
-        const currentRoute = this.router.url;
-        const foundIndex = this.steps.findIndex(step => step.active);
-        if (this.routerEnabled) {
-            this.activeIndex = this.steps.findIndex(step => currentRoute === step.routerLink);
-        } else {
-            this.activeIndex = foundIndex === -1 ? 0 : foundIndex;
-        }
+    private _setCurrentStep(currentRoute: string) {
+        const foundActiveIndex = this.steps.findIndex(step => step.active);
+        const foundActiveRoute = this.steps.findIndex(step => currentRoute === step.routerLink);
+        this.activeIndex = foundActiveRoute > -1 ? foundActiveRoute : foundActiveIndex > -1 ? foundActiveIndex : 0;
     }
 }

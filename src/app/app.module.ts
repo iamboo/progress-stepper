@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProgressStepperComponent } from './progress-stepper/progress-stepper.component';
 import { CashmereModule } from './cashmere.module';
+import { ContentComponent } from './content/content.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProgressStepperComponent
+    ProgressStepperComponent,
+    ContentComponent
   ],
   imports: [
     BrowserModule,

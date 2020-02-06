@@ -1,23 +1,33 @@
+<h2>Default Styling - Action Theme - Arrow Style (default)</h2>
 <hc-progress-stepper [steps]="progressSteps" class="default action"></hc-progress-stepper>
-<br />
-<br />
-<hc-progress-stepper [steps]="progressSteps" class="default brand"></hc-progress-stepper>
-<br />
-<br />
-<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default action"></hc-progress-stepper>
-<br />
-<br />
-<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default"></hc-progress-stepper>
-<br />
-<br />
-<hc-progress-stepper [steps]="progressSteps" class=""></hc-progress-stepper>
-<br />
-<br />
 
+<h2>Default Styling - Brand Theme - Arrow Style (default)</h2>
+<hc-progress-stepper [steps]="progressSteps" class="default brand"></hc-progress-stepper>
+
+<h2>Default Styling - NO Theme - Arrow Style (default)</h2>
+<hc-progress-stepper [steps]="progressSteps" class="default"></hc-progress-stepper>
+
+<h2>Default Styling - Action Theme - Isolated Style</h2>
+<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default action"></hc-progress-stepper>
+
+<h2>Default Styling - Brand Theme - Isolated Style</h2>
+<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default brand"></hc-progress-stepper>
+
+<h2>Default Styling - NO Theme - Isolated Style</h2>
+<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default"></hc-progress-stepper>
+
+<h2>NO Styling - NO Theme - Default Style</h2>
+<hc-progress-stepper [steps]="progressSteps" class=""></hc-progress-stepper>
+
+<h2>Compare to Tabs Component</h2>
 <hc-tab-set direction="horizontal" #tabSet>
-    <hc-tab tabTitle="Pending Tasks">
-        <div class="tab-content">
-            This is where pending tasks would go.
-        </div>
+    <hc-tab
+        [tabTitle]="step.label"
+        *ngFor="let step of progressSteps"
+        [routerLink]="step.routerLink"
+        [routerLinkActiveOptions]="{exact: true}"
+        routerLinkActive="active"
+    >
+        <div class="tab-content"></div>
     </hc-tab>
 </hc-tab-set>

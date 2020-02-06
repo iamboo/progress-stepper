@@ -4,6 +4,7 @@
             class="hc-step"
             *ngFor="let step of steps; index as i; last as isLast; first as isFirst"
             [routerLink]="step.routerLink"
+            [routerLinkActiveOptions]="{exact: true}"
             routerLinkActive="active"
             [class.active]="i === activeIndex"
             [class.incomplete]="i > activeIndex"

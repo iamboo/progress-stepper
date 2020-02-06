@@ -1,27 +1,32 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AppComponent} from './app.component';
+import {ContentComponent} from './content/content.component';
 
 const routes: Routes = [
     {
         path: 'winter',
-        component: AppComponent
+        component: ContentComponent,
+        children: [
+            {path: 'january', component: ContentComponent},
+            {path: 'february', component: ContentComponent},
+            {path: 'march', component: ContentComponent}
+        ]
     },
     {
         path: 'spring',
-        component: AppComponent
+        component: ContentComponent
     },
     {
         path: 'summer',
-        component: AppComponent
+        component: ContentComponent
     },
     {
         path: 'fall',
-        component: AppComponent
+        component: ContentComponent
     },
     {
         path: 'annual',
-        component: AppComponent
+        component: ContentComponent
     },
     {
         path: '',
