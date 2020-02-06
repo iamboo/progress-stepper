@@ -268,6 +268,11 @@ $track-space: 4rem;
 }
 
 :host(.default) {
+    .clickable {
+        cursor: pointer;
+        outline: none;
+    }
+
     .hc-step-track {
         display: flex;
         flex-direction: row;

@@ -1,4 +1,5 @@
 import {Component, Input, AfterContentInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 export function throwErrorForMissingRouterLink(stepsWithoutRouterLink: StepInterface[]) {
     const stepLabels = stepsWithoutRouterLink.map(step => step.label);
@@ -31,23 +32,21 @@ export class ProgressStepperComponent implements AfterContentInit {
     typeClass = '';
     activeIndex = 0;
 
-    constructor() {}
-
     @Input('settings')
     public settings: StepSettingsInterface;
 
     @Input('steps')
     public steps: StepInterface[];
 
+    constructor(private router: Router) {}
+
     ngAfterContentInit() {
-        this.checkForRouterUse();
         this.typeClass = this.settings && this.settings.type ? this.settings.type : 'arrow';
         this.showStepCount = this.settings && this.settings.showCount ? this.settings.showCount : false;
-        const foundIndex = this.steps.findIndex(step => step.active);
-        this.activeIndex = foundIndex === -1 ? 0 : foundIndex;
+        this._checkForRouterUse();
     }
 
-    private checkForRouterUse() {
+    private _checkForRouterUse() {
         const countUsingRouter = this.steps.filter(step => step.routerLink !== undefined).length;
         if (countUsingRouter > 0 && countUsingRouter < this.steps.length) {
             const stepMissingRouterLink = this.steps.filter(step => step.routerLink === undefined);
@@ -55,6 +54,17 @@ export class ProgressStepperComponent implements AfterContentInit {
         } else {
             this.routerEnabled = countUsingRouter === this.steps.length;
             this.useRouterOutlet = this.settings && this.settings.useRouterOutlet === true;
+            this._setCurrentStep();
+        }
+    }
+
+    private _setCurrentStep() {
+        const currentRoute = this.router.url;
+        const foundIndex = this.steps.findIndex(step => step.active);
+        if (this.routerEnabled) {
+            this.activeIndex = this.steps.findIndex(step => currentRoute === step.routerLink);
+        } else {
+            this.activeIndex = foundIndex === -1 ? 0 : foundIndex;
         }
     }
 }
