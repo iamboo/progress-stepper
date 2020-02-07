@@ -1,33 +1,23 @@
-<h2>Default Styling - Action Theme - Arrow Style (default)</h2>
-<hc-progress-stepper [steps]="progressSteps" class="default action"></hc-progress-stepper>
+<button hc-button class="pull-right" buttonStyle="primary" [hcPop]="exampleOptions">Options</button>
 
-<h2>Default Styling - Brand Theme - Arrow Style (default)</h2>
-<hc-progress-stepper [steps]="progressSteps" class="default brand"></hc-progress-stepper>
+<h1>Progress Stepper</h1>
 
-<h2>Default Styling - NO Theme - Arrow Style (default)</h2>
-<hc-progress-stepper [steps]="progressSteps" class="default"></hc-progress-stepper>
+<hc-pop #exampleOptions>
+    <h5>Style:</h5>
+    <div *ngFor="let style of styleOptions" (click)="setStyle(style)" class="menu-item">
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="style === currentStyle"></hc-icon>
+        {{ style }}
+    </div>
+    <h5>Theme:</h5>
+    <div *ngFor="let theme of themeOptions" (click)="setTheme(theme)" class="menu-item">
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="theme === currentTheme"></hc-icon>
+        {{ theme }}
+    </div>
+    <h5>Type:</h5>
+    <div *ngFor="let type of typeOptions" (click)="setType(type)" class="menu-item">
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="type === stepSettings.type"></hc-icon>
+        {{ type }}
+    </div>
+</hc-pop>
 
-<h2>Default Styling - Action Theme - Isolated Style</h2>
-<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default action"></hc-progress-stepper>
-
-<h2>Default Styling - Brand Theme - Isolated Style</h2>
-<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default brand"></hc-progress-stepper>
-
-<h2>Default Styling - NO Theme - Isolated Style</h2>
-<hc-progress-stepper [settings]="tabSettings" [steps]="progressSteps" class="default"></hc-progress-stepper>
-
-<h2>NO Styling - NO Theme - Default Style</h2>
-<hc-progress-stepper [steps]="progressSteps" class=""></hc-progress-stepper>
-
-<h2>Compare to Tabs Component</h2>
-<hc-tab-set direction="horizontal" #tabSet>
-    <hc-tab
-        [tabTitle]="step.label"
-        *ngFor="let step of progressSteps"
-        [routerLink]="step.routerLink"
-        [routerLinkActiveOptions]="{exact: true}"
-        routerLinkActive="active"
-    >
-        <div class="tab-content"></div>
-    </hc-tab>
-</hc-tab-set>
+<hc-progress-stepper [settings]="stepSettings" [steps]="progressSteps" [ngClass]="classList" #stepperElement></hc-progress-stepper>

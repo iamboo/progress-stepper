@@ -1,3 +1,22 @@
-h2 {
-    margin: 2rem 0 0.5rem 0;
+@import '~@healthcatalyst/cashmere/scss/colors';
+h1 {
+    margin-bottom: 3rem;
+}
+h5 {
+    margin: 0.5rem 0 0.25rem 0;
+}
+.fa {
+    color: rgba(0, 0, 0, 0.1);
+}
+.fa.active {
+    color: $primary-brand;
+}
+.menu-item {
+    padding: 0.25rem 0;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 600;
+    &:hover {
+        color: rgba(0, 0, 0, 1);
+    }
 }

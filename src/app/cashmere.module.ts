@@ -1,7 +1,8 @@
 import {NgModule} from '@angular/core';
-import {TabsModule, IconModule} from '@healthcatalyst/cashmere';
+import {TabsModule, IconModule, RadioButtonModule, FormFieldModule, PopModule, ButtonModule} from '@healthcatalyst/cashmere';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
-    exports: [TabsModule, IconModule]
+    exports: [TabsModule, IconModule, RadioButtonModule, FormFieldModule, PopModule, ButtonModule, BrowserAnimationsModule]
 })
 export class CashmereModule {}

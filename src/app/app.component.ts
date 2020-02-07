@@ -1,14 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {StepInterface, StepSettingsInterface} from './progress-stepper/progress-stepper.component';
+import {Component, OnInit, ViewChild, AfterContentInit} from '@angular/core';
+import {StepInterface, StepSettingsInterface, ProgressStepperComponent} from './progress-stepper/progress-stepper.component';
 
 @Component({
     selector: 'hc-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterContentInit {
     progressSteps: StepInterface[];
-    tabSettings: StepSettingsInterface;
+    stepSettings: StepSettingsInterface;
+    styleOptions = ['default', 'none'];
+    currentStyle = '';
+    themeOptions = ['action', 'brand', 'none'];
+    currentTheme = '';
+    classList = '';
+    typeOptions = ['arrow', 'isolated'];
+
+    @ViewChild('stepperElement', {static: false}) stepperElement: ProgressStepperComponent;
+
     constructor() {}
 
     ngOnInit() {
@@ -20,8 +29,36 @@ export class AppComponent implements OnInit {
             {label: 'Fall', routerLink: '/fall'},
             {label: 'Year Round', iconSet: 'fa', icon: 'fa-times', routerLink: '/annual'}
         ];
-        this.tabSettings = {
-            type: 'isolated'
+        this.stepSettings = {
+            type: 'isolated',
+            useRouterOutlet: true
         };
+    }
+
+    ngAfterContentInit() {
+        setTimeout(() => {
+            this.setStyle(this.styleOptions[0]);
+            this.setTheme(this.themeOptions[0]);
+            this.setType(this.typeOptions[0]);
+        }, 1);
+    }
+
+    setStyle(style: string) {
+        this.currentStyle = style;
+        this.updateStyleClass();
+    }
+
+    setTheme(theme: string) {
+        this.currentTheme = theme;
+        this.updateStyleClass();
+    }
+
+    setType(type) {
+        this.stepSettings.type = type;
+        this.stepperElement.typeClass = type;
+    }
+
+    updateStyleClass() {
+        this.classList = this.currentStyle + ' ' + this.currentTheme;
     }
 }
