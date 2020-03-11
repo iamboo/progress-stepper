@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, AfterContentInit} from '@angular/core';
-import {StepInterface, StepSettingsInterface, ProgressStepperComponent} from './progress-stepper/progress-stepper.component';
+import {StepInterface, StepperComponent} from './progress-stepper/progress-stepper.component';
 
 @Component({
     selector: 'hc-root',
@@ -8,15 +8,15 @@ import {StepInterface, StepSettingsInterface, ProgressStepperComponent} from './
 })
 export class AppComponent implements OnInit, AfterContentInit {
     progressSteps: StepInterface[];
-    stepSettings: StepSettingsInterface;
     styleOptions = ['default', 'none'];
     currentStyle = '';
+    currentType = '';
     themeOptions = ['action', 'brand', 'none'];
     currentTheme = '';
     classList = '';
     typeOptions = ['arrow', 'isolated'];
 
-    @ViewChild('stepperElement', {static: false}) stepperElement: ProgressStepperComponent;
+    @ViewChild('stepperElement', {static: false}) stepperElement: StepperComponent;
 
     constructor() {}
 
@@ -29,10 +29,6 @@ export class AppComponent implements OnInit, AfterContentInit {
             {label: 'Fall', routerLink: '/fall'},
             {label: 'Year Round', iconSet: 'fa', icon: 'fa-times', routerLink: '/annual'}
         ];
-        this.stepSettings = {
-            type: 'isolated',
-            useRouterOutlet: true
-        };
     }
 
     ngAfterContentInit() {
@@ -40,6 +36,7 @@ export class AppComponent implements OnInit, AfterContentInit {
             this.setStyle(this.styleOptions[0]);
             this.setTheme(this.themeOptions[0]);
             this.setType(this.typeOptions[0]);
+            this.stepperElement.useRouterOutlet = true;
         }, 1);
     }
 
@@ -54,8 +51,8 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
 
     setType(type) {
-        this.stepSettings.type = type;
-        this.stepperElement.typeClass = type;
+        this.stepperElement.type = type;
+        this.currentType = type;
     }
 
     updateStyleClass() {

@@ -15,9 +15,9 @@
     </div>
     <h5>Type:</h5>
     <div *ngFor="let type of typeOptions" (click)="setType(type)" class="menu-item">
-        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="type === stepSettings.type"></hc-icon>
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="type === currentType"></hc-icon>
         {{ type }}
     </div>
 </hc-pop>
 
-<hc-progress-stepper [settings]="stepSettings" [steps]="progressSteps" [ngClass]="classList" #stepperElement></hc-progress-stepper>
+<hc-stepper [steps]="progressSteps" [ngClass]="classList" #stepperElement></hc-stepper>

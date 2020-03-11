@@ -20,7 +20,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@healthcatalyst/cashmere": "^6.6.0",
+    "@healthcatalyst/cashmere": "^6.7.3",
     "font-awesome": "^4.7.0",
     "npm-font-open-sans": "^1.1.0",
     "rxjs": "~6.4.0",
