@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, AfterContentInit} from '@angular/core';
-import {StepInterface, StepperComponent} from './progress-stepper/stepper.component';
+import {StepInterface, StepperComponent, StepColor, StepType} from './progress-stepper/stepper.component';
 
 @Component({
     selector: 'hc-root',
@@ -8,8 +8,8 @@ import {StepInterface, StepperComponent} from './progress-stepper/stepper.compon
 })
 export class AppComponent implements OnInit, AfterContentInit {
     progressSteps: StepInterface[];
-    colorOptions = ['green', 'blue', 'purple', 'orange', 'red', 'none'];
-    typeOptions = ['arrow', 'isolated'];
+    colorOptions: StepColor[] = ['green', 'blue', 'orange', 'purple', 'red', 'none'];
+    typeOptions: StepType[] = ['arrow', 'isolated'];
 
     @ViewChild('stepperElement', {static: false}) stepperElement: StepperComponent;
 
@@ -35,11 +35,11 @@ export class AppComponent implements OnInit, AfterContentInit {
         }, 1);
     }
 
-    setType(type) {
+    setType(type: StepType) {
         this.stepperElement.type = type;
     }
 
-    setColor(color) {
+    setColor(color: StepColor) {
         this.stepperElement.color = color;
     }
 }

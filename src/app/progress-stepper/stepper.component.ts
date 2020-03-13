@@ -21,6 +21,9 @@ export interface StepInterface {
     disabled?: boolean;
 }
 
+export type StepColor = 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none';
+export type StepType = 'arrow' | 'isolated';
+
 /** Convey progress through numbered steps, providing a wizard-like workflow.  */
 @Component({
     selector: 'hc-stepper',
@@ -37,22 +40,22 @@ export class StepperComponent implements AfterContentInit {
 
     /** An array defining the steps in the stepper */
     @Input()
-    public defaultActive: boolean = false;
+    public defaultActive = false;
 
     /** Sets the layout of the progress stepper. *Defaults to `arrow`.*  */
     @Input()
-    public type: 'arrow' | 'isolated' = 'arrow';
+    public type: StepType = 'arrow';
 
     /** Sets the highlight color of the progress stepper. *Defaults to `green`.*  */
     @Input()
-    get color(): 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none' {
+    get color(): StepColor {
         return this._color;
     }
-    set color(value: 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none') {
+    set color(value: StepColor) {
         this._color = value;
         this._hostClass = 'hc-stepper-' + this._color;
     }
-    private _color: 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none' = 'green';
+    private _color: StepColor = 'green';
 
     /** Determines whether numerals should be displayed on each step indicator for the isolated type.
      * *Defaults to `false`.*  */
@@ -63,7 +66,7 @@ export class StepperComponent implements AfterContentInit {
     set showStepCount(value) {
         this._showStepCount = parseBooleanAttribute(value);
     }
-    private _showStepCount: boolean = false;
+    private _showStepCount = false;
 
     /** If true, include a router outlet with the component. *Defaults to `true`.*  */
     @Input()
@@ -73,7 +76,7 @@ export class StepperComponent implements AfterContentInit {
     set useRouterOutlet(value) {
         this._useRouterOutlet = parseBooleanAttribute(value);
     }
-    private _useRouterOutlet: boolean = true;
+    private _useRouterOutlet = true;
 
     /** Get or set the currently selected zero-based index of the stepper */
     @Input()
@@ -94,7 +97,7 @@ export class StepperComponent implements AfterContentInit {
             this.activeIndexChange.emit(this._activeIndex);
         }
     }
-    private _activeIndex: number = 0;
+    private _activeIndex = 0;
 
     /** Emits the current zero-based index for the active step whenever it changes */
     @Output()
@@ -115,7 +118,7 @@ export class StepperComponent implements AfterContentInit {
         });
     }
 
-    _stepClick(index) {
+    _stepClick(index: number) {
         if (!this._routerEnabled && this.steps[index].disabled !== true) {
             this._activeIndex = index;
             this.activeIndexChange.emit(this._activeIndex);
