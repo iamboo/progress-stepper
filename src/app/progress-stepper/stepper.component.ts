@@ -14,7 +14,8 @@ export interface StepInterface {
     routerLink?: string;
     /** The icon set the step's hc-icon should use. Must be set if using the icon parameter. */
     iconSet?: string;
-    /** An glyph that should be displayed inside the step's circle. If not set, the step number will display in the circle instead. */
+    /** An glyph that should be displayed inside the step's circle.
+     * If not set, the step number will display in the circle instead. */
     icon?: string;
     /** If true, the step will not be clickable */
     disabled?: boolean;
@@ -23,8 +24,8 @@ export interface StepInterface {
 /** Convey progress through numbered steps, providing a wizard-like workflow.  */
 @Component({
     selector: 'hc-stepper',
-    templateUrl: './progress-stepper.component.html',
-    styleUrls: ['./progress-stepper.component.scss'],
+    templateUrl: './stepper.component.html',
+    styleUrls: ['./stepper.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class StepperComponent implements AfterContentInit {
@@ -33,6 +34,10 @@ export class StepperComponent implements AfterContentInit {
     /** An array defining the steps in the stepper */
     @Input()
     public steps: StepInterface[];
+
+    /** An array defining the steps in the stepper */
+    @Input()
+    public defaultActive: boolean = false;
 
     /** Sets the layout of the progress stepper. *Defaults to `arrow`.*  */
     @Input()
@@ -49,7 +54,8 @@ export class StepperComponent implements AfterContentInit {
     }
     private _color: 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none' = 'green';
 
-    /** Determines whether numerals should be displayed on each step indicator for the isolated type. Defaults to `false`. */
+    /** Determines whether numerals should be displayed on each step indicator for the isolated type.
+     * *Defaults to `false`.*  */
     @Input()
     get showStepCount(): boolean {
         return this._showStepCount;
@@ -57,7 +63,7 @@ export class StepperComponent implements AfterContentInit {
     set showStepCount(value) {
         this._showStepCount = parseBooleanAttribute(value);
     }
-    private _showStepCount = false;
+    private _showStepCount: boolean = false;
 
     /** If true, include a router outlet with the component. *Defaults to `true`.*  */
     @Input()
@@ -67,7 +73,7 @@ export class StepperComponent implements AfterContentInit {
     set useRouterOutlet(value) {
         this._useRouterOutlet = parseBooleanAttribute(value);
     }
-    private _useRouterOutlet = true;
+    private _useRouterOutlet: boolean = true;
 
     /** Get or set the currently selected zero-based index of the stepper */
     @Input()
@@ -88,7 +94,7 @@ export class StepperComponent implements AfterContentInit {
             this.activeIndexChange.emit(this._activeIndex);
         }
     }
-    private _activeIndex = 0;
+    private _activeIndex: number = 0;
 
     /** Emits the current zero-based index for the active step whenever it changes */
     @Output()
@@ -128,6 +134,6 @@ export class StepperComponent implements AfterContentInit {
 
     private _findCurrentStep(currentRoute: string) {
         const foundActiveRoute = this.steps.findIndex(step => currentRoute === step.routerLink);
-        this._activeIndex = foundActiveRoute > -1 ? foundActiveRoute : 0;
+        this._activeIndex = foundActiveRoute > -1 ? foundActiveRoute : this.defaultActive ? 0 : -1;
     }
 }

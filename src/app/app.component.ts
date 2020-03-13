@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, AfterContentInit} from '@angular/core';
-import {StepInterface, StepperComponent} from './progress-stepper/progress-stepper.component';
+import {StepInterface, StepperComponent} from './progress-stepper/stepper.component';
 
 @Component({
     selector: 'hc-root',
@@ -8,12 +8,7 @@ import {StepInterface, StepperComponent} from './progress-stepper/progress-stepp
 })
 export class AppComponent implements OnInit, AfterContentInit {
     progressSteps: StepInterface[];
-    styleOptions = ['default', 'none'];
-    currentStyle = '';
-    currentType = '';
-    themeOptions = ['action', 'brand', 'none'];
-    currentTheme = '';
-    classList = '';
+    colorOptions = ['green', 'blue', 'purple', 'orange', 'red', 'none'];
     typeOptions = ['arrow', 'isolated'];
 
     @ViewChild('stepperElement', {static: false}) stepperElement: StepperComponent;
@@ -33,29 +28,18 @@ export class AppComponent implements OnInit, AfterContentInit {
 
     ngAfterContentInit() {
         setTimeout(() => {
-            this.setStyle(this.styleOptions[0]);
-            this.setTheme(this.themeOptions[0]);
+            this.setColor(this.colorOptions[0]);
             this.setType(this.typeOptions[0]);
             this.stepperElement.useRouterOutlet = true;
+            this.stepperElement.defaultActive = false;
         }, 1);
-    }
-
-    setStyle(style: string) {
-        this.currentStyle = style;
-        this.updateStyleClass();
-    }
-
-    setTheme(theme: string) {
-        this.currentTheme = theme;
-        this.updateStyleClass();
     }
 
     setType(type) {
         this.stepperElement.type = type;
-        this.currentType = type;
     }
 
-    updateStyleClass() {
-        this.classList = this.currentStyle + ' ' + this.currentTheme;
+    setColor(color) {
+        this.stepperElement.color = color;
     }
 }

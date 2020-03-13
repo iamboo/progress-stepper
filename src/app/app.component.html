@@ -3,19 +3,14 @@
 <h1>Progress Stepper</h1>
 
 <hc-pop #exampleOptions>
-    <h5>Style:</h5>
-    <div *ngFor="let style of styleOptions" (click)="setStyle(style)" class="menu-item">
-        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="style === currentStyle"></hc-icon>
-        {{ style }}
-    </div>
-    <h5>Theme:</h5>
-    <div *ngFor="let theme of themeOptions" (click)="setTheme(theme)" class="menu-item">
-        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="theme === currentTheme"></hc-icon>
-        {{ theme }}
+    <h5>Color:</h5>
+    <div *ngFor="let color of colorOptions" (click)="setColor(color)" class="menu-item">
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="color === stepperElement.color"></hc-icon>
+        {{ color }}
     </div>
     <h5>Type:</h5>
     <div *ngFor="let type of typeOptions" (click)="setType(type)" class="menu-item">
-        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="type === currentType"></hc-icon>
+        <hc-icon fontSet="fa" fontIcon="fa-check" [class.active]="type === stepperElement.type"></hc-icon>
         {{ type }}
     </div>
 </hc-pop>

@@ -4,6 +4,10 @@ import {ContentComponent} from './content/content.component';
 
 const routes: Routes = [
     {
+        path: 'dashboard',
+        component: ContentComponent
+    },
+    {
         path: 'winter',
         component: ContentComponent,
         children: [
@@ -31,11 +35,11 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'winter'
+        redirectTo: 'dashboard'
     },
     {
         path: '**',
-        redirectTo: 'winter'
+        redirectTo: 'dashboard'
     }
 ];
 
