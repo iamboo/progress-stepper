@@ -1,6 +1,18 @@
 import {Component, Input, AfterContentInit, HostBinding, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {parseBooleanAttribute} from '../util';
+
+function parseBooleanAttribute(value: boolean | string): boolean {
+    if (typeof value === 'boolean') {
+        return value;
+    }
+    if (value.toLowerCase() === 'false') {
+        return false;
+    }
+    if (value.toLowerCase() === 'true' || value === '') {
+        return true;
+    }
+    throw Error(String(value) + ' is not a boolean value');
+}
 
 export function throwErrorForMissingRouterLink(stepsWithoutRouterLink: StepInterface[]) {
     const stepLabels = stepsWithoutRouterLink.map(step => step.label);
@@ -105,17 +117,18 @@ export class StepperComponent implements AfterContentInit {
 
     @HostBinding('class') _hostClass = 'hc-stepper-' + this.color;
 
-    constructor(private router: Router) {}
-
-    ngAfterContentInit() {
-        this._checkForRouterUse();
+    constructor(private router: Router) {
         this.router.events.forEach(event => {
             if (event instanceof NavigationEnd) {
                 const url = event && event.url ? event.url : '';
                 this._findCurrentStep(url);
-                this.activeIndexChange.emit(this._activeIndex);
             }
         });
+    }
+
+    ngAfterContentInit() {
+        this._checkForRouterUse();
+        this._findCurrentStep(this.router.url);
     }
 
     _stepClick(index: number) {
@@ -138,5 +151,6 @@ export class StepperComponent implements AfterContentInit {
     private _findCurrentStep(currentRoute: string) {
         const foundActiveRoute = this.steps.findIndex(step => currentRoute === step.routerLink);
         this._activeIndex = foundActiveRoute > -1 ? foundActiveRoute : this.defaultActive ? 0 : -1;
+        this.activeIndexChange.emit(this._activeIndex);
     }
 }
