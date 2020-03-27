@@ -23,7 +23,7 @@
     "@healthcatalyst/cashmere": "^6.7.4",
     "font-awesome": "^4.7.0",
     "npm-font-open-sans": "^1.1.0",
-    "rxjs": "~6.4.0",
+    "rxjs": "~6.5.4",
     "tslib": "^1.11.1",
     "zone.js": "~0.9.1"
   },
