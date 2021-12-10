@@ -1,18 +1,6 @@
 import {Component, Input, AfterContentInit, HostBinding, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
-
-function parseBooleanAttribute(value: boolean | string): boolean {
-    if (typeof value === 'boolean') {
-        return value;
-    }
-    if (value.toLowerCase() === 'false') {
-        return false;
-    }
-    if (value.toLowerCase() === 'true' || value === '') {
-        return true;
-    }
-    throw Error(String(value) + ' is not a boolean value');
-}
+import {Router, NavigationEnd, Params, UrlSerializer} from '@angular/router';
+import {parseBooleanAttribute} from '../util';
 
 export function throwErrorForMissingRouterLink(stepsWithoutRouterLink: StepInterface[]) {
     const stepLabels = stepsWithoutRouterLink.map(step => step.label);
@@ -31,6 +19,8 @@ export interface StepInterface {
     icon?: string;
     /** If true, the step will not be clickable */
     disabled?: boolean;
+    /** Apply query params to the routerLink */
+    queryParams?: Params;
 }
 
 export type StepColor = 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'none';
@@ -49,10 +39,6 @@ export class StepperComponent implements AfterContentInit {
     /** An array defining the steps in the stepper */
     @Input()
     public steps: StepInterface[];
-
-    /** An array defining the steps in the stepper */
-    @Input()
-    public defaultActive = false;
 
     /** Sets the layout of the progress stepper. *Defaults to `arrow`.*  */
     @Input()
@@ -92,24 +78,24 @@ export class StepperComponent implements AfterContentInit {
 
     /** Get or set the currently selected zero-based index of the stepper */
     @Input()
-    get activeIndex(): number {
+    get activeIndex(): number | undefined {
         return this._activeIndex;
     }
-    set activeIndex(value: number) {
+    set activeIndex(value: number | undefined) {
         if (!this.steps) {
             return;
         }
-        if (value < 0 || value >= this.steps.length) {
+        if (value !== undefined && (value < 0 || value >= this.steps.length)) {
             throw Error('The hc-stepper activeIndex value of ' + value + ' is out of bounds');
         }
-        if (this._routerEnabled) {
+        if (this._routerEnabled && value !== undefined) {
             this.router.navigate([this.steps[value].routerLink]);
         } else {
             this._activeIndex = value;
             this.activeIndexChange.emit(this._activeIndex);
         }
     }
-    private _activeIndex = 0;
+    private _activeIndex: number | undefined = undefined;
 
     /** Emits the current zero-based index for the active step whenever it changes */
     @Output()
@@ -117,22 +103,23 @@ export class StepperComponent implements AfterContentInit {
 
     @HostBinding('class') _hostClass = 'hc-stepper-' + this.color;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private urlSerializer: UrlSerializer) {
         this.router.events.forEach(event => {
             if (event instanceof NavigationEnd) {
-                const url = event && event.url ? event.url : '';
-                this._findCurrentStep(url);
+                this.findCurrentStep();
             }
         });
     }
 
     ngAfterContentInit() {
         this._checkForRouterUse();
-        this._findCurrentStep(this.router.url);
+        if (this._routerEnabled) {
+            this.findCurrentStep();
+        }
     }
 
-    _stepClick(index: number) {
-        if (!this._routerEnabled && this.steps[index].disabled !== true) {
+    _stepClick(index: number | undefined) {
+        if (!this._routerEnabled && index !== undefined && this.steps[index].disabled !== true) {
             this._activeIndex = index;
             this.activeIndexChange.emit(this._activeIndex);
         }
@@ -148,9 +135,14 @@ export class StepperComponent implements AfterContentInit {
         }
     }
 
-    private _findCurrentStep(currentRoute: string) {
-        const foundActiveRoute = this.steps.findIndex(step => currentRoute === step.routerLink);
-        this._activeIndex = foundActiveRoute > -1 ? foundActiveRoute : this.defaultActive ? 0 : -1;
+    /** Can be used to activate the current step after step routerLink or queryParams updates  */
+    findCurrentStep() {
+        const foundActiveRouteIndex = this.steps.findIndex(step => {
+            const urlTree = this.router.createUrlTree([step.routerLink], {queryParams: step.queryParams});
+            const stepURL = this.urlSerializer.serialize(urlTree);
+            return this.router.isActive(stepURL, true);
+        });
+        this._activeIndex = foundActiveRouteIndex > -1 ? foundActiveRouteIndex : undefined;
         this.activeIndexChange.emit(this._activeIndex);
     }
 }

@@ -1,1 +1,4 @@
 <h5>{{ currentRoute }} content works!</h5>
+<select (change)="setParams($event)">
+    <option [value]="number" *ngFor="let number of [1, 2, 3, 4, 5]">{{ number }}</option>
+</select>

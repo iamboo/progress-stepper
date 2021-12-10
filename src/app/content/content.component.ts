@@ -1,5 +1,5 @@
 import {Component, AfterContentInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'hc-content',
@@ -9,13 +9,22 @@ import {Router} from '@angular/router';
 export class ContentComponent implements AfterContentInit {
     currentRoute = '';
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private route: ActivatedRoute) {}
 
     ngAfterContentInit() {
         this.setContent();
     }
 
     private setContent() {
-        this.currentRoute = this.router.url;
+        this.currentRoute = decodeURIComponent(this.router.url);
+    }
+
+    setParams(event: Event) {
+        const selectElement = event.srcElement as HTMLSelectElement;
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {test: selectElement.value},
+            queryParamsHandling: 'merge'
+        });
     }
 }
